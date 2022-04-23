@@ -1,10 +1,27 @@
-import react from "react";
-import UserList from "./UserList";
+import "./App.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import UserList from "./Component/UserList";
 
 function App() {
+  const [listOfUSer, setListOfUser] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      axios(`https://jsonplaceholder.typicode.com/users`).then((result) => {
+        setListOfUser(result.data);
+        setIsLoading(false);
+      });
+    };
+    fetchItems();
+  }, []);
+
   return (
-    <div className="App">
-      <UserList />
+    <div className="App container">
+      <div className="row">
+        <UserList listOfUSer={listOfUSer} isLoading={isLoading} />
+      </div>
     </div>
   );
 }
